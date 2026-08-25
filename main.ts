@@ -1,62 +1,171 @@
 namespace SpriteKind {
     export const Clue = SpriteKind.create()
 }
+/**
+ * ============================
+ * 
+ * START BUTTON
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * START CUTSCENE
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * FINISH CUTSCENE
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * PLAYER FACING + MOVEMENT
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * CLUE INTERACTION
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * EVIDENCE NOTEBOOK
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * GAME STATE
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * POIROT
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * CLUE
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * START SCREEN
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * EVIDENCE SCORE
+ * 
+ * ============================
+ */
+// ============================
+// 
+// TILEMAP
+// 
+// ============================
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (foundPaper) {
-        game.showLongText("EVIDENCE: 1) Torn piece of paper \n A strange message is written on it.", DialogLayout.Full)
-    } else {
-        game.showLongText("EVIDENCE:\n \n No evidence collected yet.", DialogLayout.Full)
+    if (gameState == "game") {
+        if (foundPaper) {
+            game.showLongText("EVIDENCE: \n \n 1. Torn piece of paper \n A strange message is written on it.", DialogLayout.Full)
+        } else {
+            game.showLongText("EVIDENCE: \n \n No evidence collected yet.", DialogLayout.Full)
+        }
     }
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (poirot, clue) {
-    if (controller.A.isPressed()) {
-        foundPaper = true
-        evidence += 1
-        info.setScore(evidence)
-        game.showLongText("You found a torn piece of paper with strange marks.", DialogLayout.Bottom)
-        clue.destroy()
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (gameState == "start") {
+        startCutscene()
     }
 })
-let cutsceneFinished = 0
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (player2, clueSprite) {
+    if (gameState == "game") {
+        if (controller.A.isPressed()) {
+            foundPaper = true
+            evidence += 1
+            info.setScore(evidence)
+            game.showLongText("You found a torn piece of paper with strange marks.", DialogLayout.Bottom)
+            clueSprite.destroy()
+        }
+    }
+})
+function finishCutscene () {
+    gameState = "game"
+    // Return to the dining carriage
+    tiles.setCurrentTilemap(tilemap`level`)
+    // Put Poirot somewhere sensible
+    tiles.placeOnRandomTile(poirot, assets.tile`floor`)
+    // Give control back to player
+    controller.moveSprite(poirot, 60, 60)
+    // Camera follows Poirot
+    scene.cameraFollowSprite(poirot)
+    // Restore game screen
+    scene.setBackgroundColor(9)
+}
+function startCutscene () {
+    gameState = "cutscene"
+    // Stop Poirot
+    poirot.vx = 0
+    poirot.vy = 0
+    // White placeholder for the cutscene
+    scene.setBackgroundColor(1)
+    game.showLongText("CUTSCENE PLACEHOLDER \n \n Your opening animation will go here.", DialogLayout.Center)
+    setTimeout(function () {
+        finishCutscene()
+    }, 3000)
+}
 let foundPaper = false
 let evidence = 0
-evidence = 0
-info.setScore(evidence)
-let poirot = sprites.create(assets.image`poirot right`, SpriteKind.Player)
-poirot.setBounceOnWall(true)
-tiles.setCurrentTilemap(tilemap`level`)
+let poirot: Sprite = null
+let gameState = ""
+gameState = "start"
+poirot = sprites.create(assets.image`poirot right`, SpriteKind.Player)
+poirot.setBounceOnWall(false)
+// Your actual dining-car tilemap
+tiles.setCurrentTilemap(tilemap`level2`)
 scene.cameraFollowSprite(poirot)
 let clue = sprites.create(assets.image`clue`, SpriteKind.Clue)
 clue.setPosition(80, 60)
-// Your current dining-car tilemap
-tiles.setCurrentTilemap(tilemap`level2`)
-// Keep Poirot still during the cutscene
+info.setScore(evidence)
+scene.setBackgroundColor(15)
+game.showLongText("MURDER ON THE ORIENT EXPRESS: THE GAME \n \n PRESS A TO START", DialogLayout.Center)
+// Stop Poirot while we are on the start screen
 poirot.vx = 0
 poirot.vy = 0
-let gameState = "cutscene"
-gameState = "game"
 game.onUpdate(function () {
-    // Your normal movement/facing code goes here
-    if (cutsceneFinished) {
-        controller.moveSprite(poirot, 60, 60)
-    }
-})
-game.onUpdate(function () {
-    if (controller.left.isPressed()) {
-        poirot.setImage(assets.image`poirot leftright`)
-    } else if (controller.right.isPressed()) {
-        poirot.setImage(assets.image`poirot right`)
-    }
-    if (controller.up.isPressed()) {
-        poirot.setImage(assets.image`Poirot up`)
-    }
-    if (controller.down.isPressed()) {
-        poirot.setImage(assets.image`Poirot going down`)
-    }
-})
-game.onUpdate(function () {
-    // normal player controls
     if (gameState == "game") {
-        cutsceneFinished = 0
+        if (controller.left.isPressed()) {
+            poirot.setImage(assets.image`poirot leftright`)
+        } else if (controller.right.isPressed()) {
+            poirot.setImage(assets.image`poirot right`)
+        } else if (controller.up.isPressed()) {
+            poirot.setImage(assets.image`Poirot up`)
+        } else if (controller.down.isPressed()) {
+            poirot.setImage(assets.image`Poirot going down`)
+        }
+    } else {
+        // Make absolutely sure Poirot cannot move during
+        // the start screen or cutscene.
+        poirot.vx = 0
+        poirot.vy = 0
     }
 })
