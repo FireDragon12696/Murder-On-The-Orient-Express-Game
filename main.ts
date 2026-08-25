@@ -17,6 +17,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (poirot, clue) {
         clue.destroy()
     }
 })
+let cutsceneFinished = 0
 let foundPaper = false
 let evidence = 0
 evidence = 0
@@ -35,7 +36,6 @@ poirot.vy = 0
 let gameState = "cutscene"
 gameState = "game"
 game.onUpdate(function () {
-    let cutsceneFinished = 0
     // Your normal movement/facing code goes here
     if (cutsceneFinished) {
         controller.moveSprite(poirot, 60, 60)
@@ -57,6 +57,6 @@ game.onUpdate(function () {
 game.onUpdate(function () {
     // normal player controls
     if (gameState == "game") {
-    	
+        cutsceneFinished = 0
     }
 })
