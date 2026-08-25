@@ -22,12 +22,25 @@ let evidence = 0
 evidence = 0
 info.setScore(evidence)
 let poirot = sprites.create(assets.image`poirot right`, SpriteKind.Player)
-controller.moveSprite(poirot, 60, 60)
 poirot.setBounceOnWall(true)
 tiles.setCurrentTilemap(tilemap`level`)
 scene.cameraFollowSprite(poirot)
 let clue = sprites.create(assets.image`clue`, SpriteKind.Clue)
 clue.setPosition(80, 60)
+// Your current dining-car tilemap
+tiles.setCurrentTilemap(tilemap`level2`)
+// Keep Poirot still during the cutscene
+poirot.vx = 0
+poirot.vy = 0
+let gameState = "cutscene"
+gameState = "game"
+game.onUpdate(function () {
+    let cutsceneFinished = 0
+    // Your normal movement/facing code goes here
+    if (cutsceneFinished) {
+        controller.moveSprite(poirot, 60, 60)
+    }
+})
 game.onUpdate(function () {
     if (controller.left.isPressed()) {
         poirot.setImage(assets.image`poirot leftright`)
@@ -39,5 +52,11 @@ game.onUpdate(function () {
     }
     if (controller.down.isPressed()) {
         poirot.setImage(assets.image`Poirot going down`)
+    }
+})
+game.onUpdate(function () {
+    // normal player controls
+    if (gameState == "game") {
+    	
     }
 })
