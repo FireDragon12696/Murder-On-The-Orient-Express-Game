@@ -80,7 +80,7 @@ namespace myTiles {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-`, [myTiles.transparency16], TileScale.Sixteen);
+`, [myTiles.transparency16,myTiles.tile13], TileScale.Sixteen);
         }
         return null;
     })

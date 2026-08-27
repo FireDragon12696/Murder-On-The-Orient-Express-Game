@@ -4,6 +4,13 @@ namespace SpriteKind {
 /**
  * ============================
  * 
+ * EVIDENCE NOTEBOOK
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
  * START BUTTON
  * 
  * ============================
@@ -33,13 +40,6 @@ namespace SpriteKind {
  * ============================
  * 
  * CLUE INTERACTION
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * EVIDENCE NOTEBOOK
  * 
  * ============================
  */
@@ -151,6 +151,7 @@ game.showLongText("MURDER ON THE ORIENT EXPRESS: THE GAME \n \n PRESS A TO START
 // Stop Poirot while we are on the start screen
 poirot.vx = 0
 poirot.vy = 0
+let mySprite20260826T085932268Z = sprites.create(assets.image`CUT-1`, SpriteKind.Player)
 game.onUpdate(function () {
     if (gameState == "game") {
         if (controller.left.isPressed()) {
