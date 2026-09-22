@@ -79,9 +79,9 @@ namespace SpriteKind {
  * ============================
  */
 // ============================
-//
+// 
 // TILEMAP
-//
+// 
 // ============================
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (gameState == "game") {
@@ -97,16 +97,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         startCutscene()
     }
 })
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (gameState == "cutscene") {
-        if (cutsceneFrame < 6) {
-            cutsceneFrame += 1
-            showCutsceneFrame()
-        } else {
-            finishCutscene()
-        }
-    }
-})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (player2, clueSprite) {
     if (gameState == "game") {
         if (controller.A.isPressed()) {
@@ -118,32 +108,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (player2, clueSpr
         }
     }
 })
-function showCutsceneFrame () {
-    if (cutsceneFrame == 0) {
-        scene.setBackgroundImage(assets.image`CUT-0`)
-    } else if (cutsceneFrame == 1) {
-        scene.setBackgroundImage(assets.image`CUT-1`)
-    } else if (cutsceneFrame == 2) {
-        scene.setBackgroundImage(assets.image`CUT-2`)
-    } else if (cutsceneFrame == 3) {
-        scene.setBackgroundImage(assets.image`CUT-3`)
-    } else if (cutsceneFrame == 4) {
-        scene.setBackgroundImage(assets.image`CUT-4`)
-    } else if (cutsceneFrame == 5) {
-        scene.setBackgroundImage(assets.image`CUT-5`)
-    } else {
-        scene.setBackgroundImage(assets.image`CUT-6`)
-    }
-}
 function finishCutscene () {
     gameState = "game"
-    // Return to the actual dining carriage tilemap
-    tiles.setCurrentTilemap(tilemap`level2`)
-    // Make the real gameplay Poirot visible again
-    poirot.setFlag(SpriteFlag.Invisible, false)
-    // Put Poirot somewhere sensible on the dining-car floor
+    // Return to the dining carriage
+    tiles.setCurrentTilemap(tilemap`level`)
+    // Put Poirot somewhere sensible
     tiles.placeOnRandomTile(poirot, assets.tile`floor`)
-    // Give control back to the player
+    // Give control back to player
     controller.moveSprite(poirot, 60, 60)
     // Camera follows Poirot
     scene.cameraFollowSprite(poirot)
@@ -152,15 +123,16 @@ function finishCutscene () {
 }
 function startCutscene () {
     gameState = "cutscene"
-    cutsceneFrame = 0
-    // Hide the gameplay Poirot because he is already drawn into each CUT image
+    // Stop Poirot
     poirot.vx = 0
     poirot.vy = 0
-    poirot.setFlag(SpriteFlag.Invisible, true)
-    // Show the first cutscene panel
-    showCutsceneFrame()
+    // White placeholder for the cutscene
+    scene.setBackgroundColor(1)
+    game.showLongText("CUTSCENE PLACEHOLDER \n \n Your opening animation will go here.", DialogLayout.Center)
+    setTimeout(function () {
+        finishCutscene()
+    }, 3000)
 }
-let cutsceneFrame = 0
 let foundPaper = false
 let evidence = 0
 let poirot: Sprite = null
