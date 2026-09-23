@@ -39,6 +39,20 @@ namespace SpriteKind {
 /**
  * ============================
  * 
+ * CLUE INTERACTION
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * GAME STATE
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
  * START SCREEN
  * 
  * ============================
@@ -83,6 +97,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (player2, clueSpr
 /**
  * ============================
  * 
+ * POIROT
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
  * CLUE
  * 
  * ============================
@@ -102,27 +123,6 @@ function finishCutscene () {
     poirot.setFlag(SpriteFlag.Invisible, false)
     clue.setFlag(SpriteFlag.Invisible, false)
 }
-/**
- * ============================
- * 
- * CLUE INTERACTION
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * GAME STATE
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * POIROT
- * 
- * ============================
- */
 function startCutscene () {
     gameState = "cutscene"
     // Stop Poirot
@@ -132,10 +132,6 @@ function startCutscene () {
     scene.setBackgroundColor(1)
     poirot.setFlag(SpriteFlag.Invisible, true)
     clue.setFlag(SpriteFlag.Invisible, true)
-    game.showLongText("CUTSCENE PLACEHOLDER \n \n Your opening animation will go here.", DialogLayout.Center)
-    setTimeout(function () {
-        finishCutscene()
-    }, 3000)
 }
 let foundPaper = false
 let evidence = 0
@@ -156,6 +152,14 @@ game.showLongText("MURDER ON THE ORIENT EXPRESS: THE GAME \n \n PRESS A TO START
 // Stop Poirot while we are on the start screen
 poirot.vx = 0
 poirot.vy = 0
+let Cutscene = 0
+let Cut_0 = assets.image`CUT-0`
+let Cut_1 = assets.image`CUT-1`
+let Cut_2 = assets.image`CUT-2`
+let Cut_3 = assets.image`CUT-3`
+let Cut_4 = assets.image`CUT-4`
+let Cut_5 = assets.image`CUT-5`
+let Cut_6 = assets.image`CUT-6`
 game.onUpdate(function () {
     if (gameState == "game") {
         if (controller.left.isPressed()) {
