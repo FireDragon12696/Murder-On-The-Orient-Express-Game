@@ -39,34 +39,6 @@ namespace SpriteKind {
 /**
  * ============================
  * 
- * CLUE INTERACTION
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * GAME STATE
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * POIROT
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * CLUE
- * 
- * ============================
- */
-/**
- * ============================
- * 
  * START SCREEN
  * 
  * ============================
@@ -108,6 +80,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (player2, clueSpr
         }
     }
 })
+/**
+ * ============================
+ * 
+ * CLUE
+ * 
+ * ============================
+ */
 function finishCutscene () {
     gameState = "game"
     // Return to the dining carriage
@@ -120,7 +99,30 @@ function finishCutscene () {
     scene.cameraFollowSprite(poirot)
     // Restore game screen
     scene.setBackgroundColor(9)
+    poirot.setFlag(SpriteFlag.Invisible, false)
+    clue.setFlag(SpriteFlag.Invisible, false)
 }
+/**
+ * ============================
+ * 
+ * CLUE INTERACTION
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * GAME STATE
+ * 
+ * ============================
+ */
+/**
+ * ============================
+ * 
+ * POIROT
+ * 
+ * ============================
+ */
 function startCutscene () {
     gameState = "cutscene"
     // Stop Poirot
@@ -128,6 +130,8 @@ function startCutscene () {
     poirot.vy = 0
     // White placeholder for the cutscene
     scene.setBackgroundColor(1)
+    poirot.setFlag(SpriteFlag.Invisible, true)
+    clue.setFlag(SpriteFlag.Invisible, true)
     game.showLongText("CUTSCENE PLACEHOLDER \n \n Your opening animation will go here.", DialogLayout.Center)
     setTimeout(function () {
         finishCutscene()
@@ -135,6 +139,7 @@ function startCutscene () {
 }
 let foundPaper = false
 let evidence = 0
+let clue: Sprite = null
 let poirot: Sprite = null
 let gameState = ""
 gameState = "start"
@@ -143,7 +148,7 @@ poirot.setBounceOnWall(false)
 // Your actual dining-car tilemap
 tiles.setCurrentTilemap(tilemap`level2`)
 scene.cameraFollowSprite(poirot)
-let clue = sprites.create(assets.image`clue`, SpriteKind.Clue)
+clue = sprites.create(assets.image`clue`, SpriteKind.Clue)
 clue.setPosition(80, 60)
 info.setScore(evidence)
 scene.setBackgroundColor(15)
