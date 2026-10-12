@@ -81,6 +81,8 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (gameState == "start") {
         startCutscene()
+    } else if (gameState == "cutscene") {
+        finishCutscene()
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (player2, clueSprite) {
@@ -142,7 +144,7 @@ gameState = "start"
 poirot = sprites.create(assets.image`poirot right`, SpriteKind.Player)
 poirot.setBounceOnWall(false)
 // Your actual dining-car tilemap
-tiles.setCurrentTilemap(tilemap`level2`)
+tiles.setCurrentTilemap(tilemap`level`)
 scene.cameraFollowSprite(poirot)
 clue = sprites.create(assets.image`clue`, SpriteKind.Clue)
 clue.setPosition(80, 60)
