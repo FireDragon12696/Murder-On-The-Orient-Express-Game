@@ -79,9 +79,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (gameState == "start") {
-        startCutscene()
-    } else if (gameState == "cutscene") {
+    if (gameState == "start" || gameState == "cutscene") {
         finishCutscene()
     }
 })
