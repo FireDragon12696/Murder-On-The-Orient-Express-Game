@@ -79,10 +79,13 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (gameState == "start" || gameState == "cutscene") {
+    if (gameState == "start") {
+        startCutscene()
+    } else if (gameState == "cutscene") {
         finishCutscene()
     }
 })
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () { if (gameState == "cutscene") { Cutscene += 1; if (Cutscene == 1) scene.setBackgroundImage(assets.image`CUT-1`); else if (Cutscene == 2) scene.setBackgroundImage(assets.image`CUT-2`); else if (Cutscene == 3) scene.setBackgroundImage(assets.image`CUT-3`); else if (Cutscene == 4) scene.setBackgroundImage(assets.image`CUT-4`); else if (Cutscene == 5) scene.setBackgroundImage(assets.image`CUT-5`); else if (Cutscene == 6) scene.setBackgroundImage(assets.image`CUT-6`); else finishCutscene() } })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (player2, clueSprite) {
     if (gameState == "game") {
         if (controller.A.isPressed()) {
@@ -132,7 +135,7 @@ function startCutscene () {
     poirot.vx = 0
     poirot.vy = 0
     // Black placeholder while the cutscene is disabled
-    scene.setBackgroundColor(0)
+    scene.setBackgroundImage(assets.image`CUT-0`)
     poirot.setFlag(SpriteFlag.Invisible, true)
     clue.setFlag(SpriteFlag.Invisible, true)
 }
