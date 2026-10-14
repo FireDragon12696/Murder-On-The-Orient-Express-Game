@@ -113,7 +113,7 @@ function finishCutscene () {
     // Return to the dining carriage
     tiles.setCurrentTilemap(tilemap`level`)
     // Put Poirot somewhere sensible
-    tiles.placeOnRandomTile(poirot, assets.tile`floor`)
+    poirot.setPosition(80, 60)
     // Give control back to player
     controller.moveSprite(poirot, 60, 60)
     // Camera follows Poirot
@@ -128,8 +128,8 @@ function startCutscene () {
     // Stop Poirot
     poirot.vx = 0
     poirot.vy = 0
-    // White placeholder for the cutscene
-    scene.setBackgroundColor(1)
+    // Black placeholder while the cutscene is disabled
+    scene.setBackgroundColor(0)
     poirot.setFlag(SpriteFlag.Invisible, true)
     clue.setFlag(SpriteFlag.Invisible, true)
 }
@@ -141,13 +141,13 @@ let gameState = ""
 gameState = "start"
 poirot = sprites.create(assets.image`poirot right`, SpriteKind.Player)
 poirot.setBounceOnWall(false)
-// Your actual dining-car tilemap
-tiles.setCurrentTilemap(tilemap`level`)
-scene.cameraFollowSprite(poirot)
+// Keep the title screen black; load the dining room only after A is pressed.
+poirot.setFlag(SpriteFlag.Invisible, true)
 clue = sprites.create(assets.image`clue`, SpriteKind.Clue)
+clue.setFlag(SpriteFlag.Invisible, true)
 clue.setPosition(80, 60)
 info.setScore(evidence)
-scene.setBackgroundColor(15)
+scene.setBackgroundColor(0)
 game.showLongText("MURDER ON THE ORIENT EXPRESS: THE GAME \n \n PRESS A TO START", DialogLayout.Center)
 // Stop Poirot while we are on the start screen
 poirot.vx = 0
