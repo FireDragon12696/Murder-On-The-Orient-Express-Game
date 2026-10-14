@@ -112,8 +112,11 @@ function finishCutscene () {
     gameState = "game"
     // Return to the dining carriage
     tiles.setCurrentTilemap(tilemap`level`)
-    // Put Poirot somewhere sensible
-    poirot.setPosition(80, 60)
+    // Spawn Poirot on a random floor tile, away from the note
+    tiles.placeOnRandomTile(poirot, assets.tile`floor`)
+    for (let attempts = 0; attempts < 10 && poirot.overlapsWith(clue); attempts++) {
+        tiles.placeOnRandomTile(poirot, assets.tile`floor`)
+    }
     // Give control back to player
     controller.moveSprite(poirot, 60, 60)
     // Camera follows Poirot
