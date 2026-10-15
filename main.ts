@@ -64,6 +64,37 @@ namespace SpriteKind {
  * 
  * ============================
  */
+/**
+ * ============================
+ * 
+ * POIROT
+ * 
+ * ============================
+ */
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (gameState == "cutscene") {
+        Cutscene += 1
+        if (Cutscene == 1) {
+            scene.setBackgroundImage(assets.image`CUT-1`)
+        } else if (Cutscene == 2) {
+            scene.setBackgroundImage(assets.image`CUT-2`)
+        } else if (Cutscene == 3) {
+            scene.setBackgroundImage(assets.image`CUT-3`)
+        } else if (Cutscene == 4) {
+            scene.setBackgroundImage(assets.image`CUT-4`)
+        } else if (Cutscene == 5) {
+            scene.setBackgroundImage(assets.image`CUT-5`)
+        } else if (Cutscene == 6) {
+            scene.setBackgroundImage(assets.image`CUT-6`)
+            pause(2000)
+            if (gameState == "cutscene" && Cutscene == 6) {
+                finishCutscene()
+            }
+        } else {
+            finishCutscene()
+        }
+    }
+})
 // ============================
 // 
 // TILEMAP
@@ -85,7 +116,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         finishCutscene()
     }
 })
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () { if (gameState == "cutscene") { Cutscene += 1; if (Cutscene == 1) scene.setBackgroundImage(assets.image`CUT-1`); else if (Cutscene == 2) scene.setBackgroundImage(assets.image`CUT-2`); else if (Cutscene == 3) scene.setBackgroundImage(assets.image`CUT-3`); else if (Cutscene == 4) scene.setBackgroundImage(assets.image`CUT-4`); else if (Cutscene == 5) scene.setBackgroundImage(assets.image`CUT-5`); else if (Cutscene == 6) { scene.setBackgroundImage(assets.image`CUT-6`); pause(2000); if (gameState == "cutscene" && Cutscene == 6) finishCutscene() } else finishCutscene() } })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (player2, clueSprite) {
     if (gameState == "game") {
         if (controller.A.isPressed()) {
@@ -97,20 +127,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (player2, clueSpr
         }
     }
 })
-/**
- * ============================
- * 
- * POIROT
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * CLUE
- * 
- * ============================
- */
+// ============================
+// 
+// CLUE
+// 
+// ============================
 function finishCutscene () {
     gameState = "game"
     // Return to the dining carriage
@@ -120,7 +141,7 @@ function finishCutscene () {
     for (let attempts = 0; attempts < 10 && poirot.overlapsWith(clue); attempts++) {
         tiles.placeOnRandomTile(poirot, assets.tile`floor`)
     }
-    // Give control back to player
+// Give control back to player
     controller.moveSprite(poirot, 60, 60)
     // Camera follows Poirot
     scene.cameraFollowSprite(poirot)
@@ -140,10 +161,11 @@ function startCutscene () {
     clue.setFlag(SpriteFlag.Invisible, true)
 }
 let foundPaper = false
+let Cutscene = 0
 let evidence = 0
-let clue: Sprite = null
-let poirot: Sprite = null
 let gameState = ""
+let poirot: Sprite = null
+let clue: Sprite = null
 gameState = "start"
 poirot = sprites.create(assets.image`poirot right`, SpriteKind.Player)
 poirot.setBounceOnWall(false)
@@ -158,7 +180,6 @@ game.showLongText("MURDER ON THE ORIENT EXPRESS: THE GAME \n \n PRESS A TO START
 // Stop Poirot while we are on the start screen
 poirot.vx = 0
 poirot.vy = 0
-let Cutscene = 0
 let Cut_0 = assets.image`CUT-0`
 let Cut_1 = assets.image`CUT-1`
 let Cut_2 = assets.image`CUT-2`
