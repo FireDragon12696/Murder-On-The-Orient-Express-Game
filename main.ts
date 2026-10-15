@@ -85,7 +85,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         finishCutscene()
     }
 })
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () { if (gameState == "cutscene") { Cutscene += 1; if (Cutscene == 1) scene.setBackgroundImage(assets.image`CUT-1`); else if (Cutscene == 2) scene.setBackgroundImage(assets.image`CUT-2`); else if (Cutscene == 3) scene.setBackgroundImage(assets.image`CUT-3`); else if (Cutscene == 4) scene.setBackgroundImage(assets.image`CUT-4`); else if (Cutscene == 5) scene.setBackgroundImage(assets.image`CUT-5`); else if (Cutscene == 6) scene.setBackgroundImage(assets.image`CUT-6`); else finishCutscene() } })
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () { if (gameState == "cutscene") { Cutscene += 1; if (Cutscene == 1) scene.setBackgroundImage(assets.image`CUT-1`); else if (Cutscene == 2) scene.setBackgroundImage(assets.image`CUT-2`); else if (Cutscene == 3) scene.setBackgroundImage(assets.image`CUT-3`); else if (Cutscene == 4) scene.setBackgroundImage(assets.image`CUT-4`); else if (Cutscene == 5) scene.setBackgroundImage(assets.image`CUT-5`); else if (Cutscene == 6) { scene.setBackgroundImage(assets.image`CUT-6`); pause(2000); if (gameState == "cutscene" && Cutscene == 6) finishCutscene() } else finishCutscene() } })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Clue, function (player2, clueSprite) {
     if (gameState == "game") {
         if (controller.A.isPressed()) {
